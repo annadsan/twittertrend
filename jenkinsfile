@@ -25,7 +25,7 @@ pipeline{
             }
             steps {
                 echo '<--------------- Sonar Analysis started  --------------->'
-                withSonarQubeEnv('sonarqube_server') {    
+                withSonarQubeEnv('sonar_server') {    
                     sh "${scannerHome}/bin/Sonar_scanner"
                 echo '<--------------- Sonar Analysis stopped  --------------->'
                 }    
