@@ -1,36 +1,34 @@
-
 pipeline{
     agent{
         node{
             label "slave"
         }
     }
-    environment{
-        PATH = "/opt/apache-maven-3.8.7/bin/:$PATH"
+    environment {
+            PATH = "/opt/apache-maven-3.8.7/bin:$PATH"
     }
     stages{
-        stage("clone the code"){
+        stage ("Clone the code"){
             steps{
-                git branch: 'main', credentialsId: 'slave-role', url: 'https://github.com/annadsan/twittertrend.git'
+               git branch: 'main', credentialsId: 'slave-role', url: 'https://github.com/annadsan/twittertrend.git'
             }
         }
-        stage("build the code"){
+        stage ("Build the code"){
             steps{
                 sh 'mvn clean install'
             }
         }
-        stage ("Sonar Analysis") {
+        stage ("SonarQube Analysis"){
             environment {
-               scannerHome = tool 'sonar_scanner'
+                scannerHome = tool 'Sonar_scanner'
             }
-            steps {
-                echo '<--------------- Sonar Analysis started  --------------->'
-                withSonarQubeEnv('sonar_server') {    
-                    sh "${scannerHome}/bin/Sonar_scanner"
-                echo '<--------------- Sonar Analysis stopped  --------------->'
-                }    
-               
-            }   
+            steps{
+                withSonarQubeEnv('Java_SonarQube_Server'){
+                      sh "${scannerHome}/bin/Sonar_scanner"
+            
+                }
 
+            }
         }
     }
+}
